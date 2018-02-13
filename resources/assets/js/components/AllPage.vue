@@ -35,7 +35,7 @@ export default {
     getQuestions () {
       let self = this
 
-      axios.get('https://fishpi.paul.style/api/v1/questions')
+      axios.get('api/v1/questions')
         .then(function (response) {
           self.questions = response.data
         })

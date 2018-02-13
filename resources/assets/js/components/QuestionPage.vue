@@ -90,7 +90,7 @@ export default {
     getQuestion () {
       let self = this
 
-      let url = 'https://fishpi.paul.style/api/v1/question'
+      let url = 'api/v1/question'
       if (this.$route.params.question) {
         url += '/' + this.$route.params.question
       }
@@ -105,7 +105,7 @@ export default {
     getQuestions () {
       let self = this
 
-      axios.get('https://fishpi.paul.style/api/v1/questions')
+      axios.get('api/v1/questions')
         .then(function (response) {
           self.questions = response.data.map(item => {
             return {
@@ -117,19 +117,19 @@ export default {
     },
 
     updateText: debounce(function () {
-      return axios.post('https://fishpi.paul.style/api/v1/question/' + this.question.id, {
+      return axios.post('api/v1/question/' + this.question.id, {
         text: this.question.text
       })
     }, 1000),
 
     updateOptionText: debounce(function (option) {
-      axios.post('https://fishpi.paul.style/api/v1/question/' + this.question.id + '/option/' + option.id, {
+      axios.post('api/v1/question/' + this.question.id + '/option/' + option.id, {
         text: option.text
       })
     }, 500),
 
     updateToQuestion (option) {
-      axios.post('https://fishpi.paul.style/api/v1/question/' + this.question.id + '/option/' + option.id, {
+      axios.post('api/v1/question/' + this.question.id + '/option/' + option.id, {
         to_question_id: option.to_question_id
       })
     },
@@ -142,7 +142,7 @@ export default {
       if (!option.id) {
         return
       }
-      axios.post('https://fishpi.paul.style/api/v1/question', {
+      axios.post('api/v1/question', {
         text: '',
         option: option.id
       }).then(function (response) {
@@ -158,7 +158,7 @@ export default {
     },
 
     addOption (questionId) {
-      axios.post('https://fishpi.paul.style/api/v1/question/' + questionId + '/option', {
+      axios.post('api/v1/question/' + questionId + '/option', {
         text: ''
       })
     }
