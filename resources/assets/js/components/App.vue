@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <img class="full" src="./assets/christmas.gif" />
-    <img class="presents" src="./assets/coosto.png" />
-    <img class="carol" src="./assets/carol.png" />
     <router-link class="top" to="all">
       <el-button>Overview</el-button>
     </router-link>
@@ -12,12 +10,13 @@
 
 <script>
 export default {
-  name: 'app'
-}
+  name: "app"
+};
 </script>
 
 <style lang="scss">
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
@@ -48,7 +47,7 @@ html, body {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
