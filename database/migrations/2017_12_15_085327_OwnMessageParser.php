@@ -14,15 +14,15 @@ class OwnMessageParser extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->longText('text');
-            $table->longText('attachment');
+            $table->longText('text')->nullable();
+            $table->longText('attachment')->nullable();
         });
 
         Schema::create('options', function (Blueprint $table) {
             $table->increments('id');
-            $table->longText('text');
-            $table->longText('attachment');
-            $table->integer('question_id');
+            $table->longText('text')->nullable();
+            $table->longText('attachment')->nullable();
+            $table->integer('question_id')->nullable();
         });
 
         Schema::create('option_question', function (Blueprint $table) {

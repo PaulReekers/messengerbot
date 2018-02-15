@@ -13,7 +13,7 @@ class AddStartQuestion extends Migration
     public function up()
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->integer('first');
+            $table->integer('first')->default(0);
         });
     }
 
