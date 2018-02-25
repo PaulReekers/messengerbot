@@ -20,27 +20,15 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 export default {
   name: 'All',
   data () {
     return {
-      questions: []
     }
   },
 
   methods: {
-
-    getQuestions () {
-      let self = this
-
-      axios.get('api/v1/questions')
-        .then(function (response) {
-          self.questions = response.data
-        })
-    },
-
     goTo (option) {
       if (option.to_question_id) {
         this.$router.push({ name: 'QuestionPage', params: { question: option.to_question_id } })
@@ -48,9 +36,11 @@ export default {
     }
   },
 
-  created () {
-    this.getQuestions()
-  }
+  computed: {
+    questions() {
+      return this.$store.getters.questions;
+    }
+  },
 }
 </script>
 

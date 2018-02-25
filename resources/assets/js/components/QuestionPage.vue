@@ -18,7 +18,7 @@
       <div
         class="choice-row"
         :key="index"
-        v-for="(option, index) in options"
+        v-for="(option, index) in question.options"
       >
         <el-input
           class="choice"
@@ -51,6 +51,7 @@
           class="green-button"
         ></el-button>
       </div>
+      <el-button type="primary" class="green-button" @click="addOption()">Add</el-button>
     </el-card>
   </div>
 </template>
@@ -64,13 +65,14 @@ export default {
   data () {
     return {
       question: {},
-      options: [],
-      questions: [],
-      values: []
     }
   },
 
   computed: {
+    questions() {
+      return this.$store.getters.filteredQuestions;
+    },
+
     questionsWithoutSelf () {
       return this.questions.filter((item) => {
         return item.id !== this.question.id
@@ -88,50 +90,34 @@ export default {
 
   methods: {
     getQuestion () {
-      let self = this
 
-      let url = 'api/v1/question'
-      if (this.$route.params.question) {
-        url += '/' + this.$route.params.question
-      }
+      var qid = this.$route.params.question
+      var question = this.$store.getters.questionsById(qid);
 
-      axios.get(url)
-        .then(function (response) {
-          self.question = response.data.question
-          self.options = response.data.options
-        })
-    },
-
-    getQuestions () {
-      let self = this
-
-      axios.get('api/v1/questions')
-        .then(function (response) {
-          self.questions = response.data.map(item => {
-            return {
-              label: 'Story #' + item.id,
-              id: item.id
-            }
-          })
-        })
+      this.question = question;
     },
 
     updateText: debounce(function () {
-      return axios.post('api/v1/question/' + this.question.id, {
+      this.$store.dispatch('SAVE_QUESTION', {
+        id: this.question.id,
         text: this.question.text
-      })
+      });
     }, 1000),
 
     updateOptionText: debounce(function (option) {
-      axios.post('api/v1/question/' + this.question.id + '/option/' + option.id, {
+      this.$store.dispatch('SAVE_OPTION', {
+        id: this.question.id,
+        option: option.id,
         text: option.text
-      })
+      });
     }, 500),
 
     updateToQuestion (option) {
-      axios.post('api/v1/question/' + this.question.id + '/option/' + option.id, {
+      this.$store.dispatch('SAVE_OPTION', {
+        id: this.question.id,
+        option: option.id,
         to_question_id: option.to_question_id
-      })
+      });
     },
 
     goTo (option) {
@@ -142,31 +128,23 @@ export default {
       if (!option.id) {
         return
       }
-      axios.post('api/v1/question', {
-        text: '',
-        option: option.id
-      }).then(function (response) {
-        const newId = response.data.question.id
-        self.addOption(newId)
-        self.addOption(newId)
-        setTimeout(function () {
-          self.goTo({
-            to_question_id: newId
-          })
-        }, 1000)
-      })
+
+      this.$store.dispatch('NEW_QUESTION', {
+        id: option.id,
+        question: this.question.id,
+        router: this.$router
+      });
     },
 
     addOption (questionId) {
-      axios.post('api/v1/question/' + questionId + '/option', {
-        text: ''
-      })
+      this.$store.dispatch('ADD_OPTION', {
+        id: this.question.id
+      });
     }
   },
 
   created () {
     this.getQuestion()
-    this.getQuestions()
   }
 }
 </script>

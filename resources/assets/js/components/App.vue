@@ -1,17 +1,25 @@
 <template>
   <div id="app">
     <img class="full" src="./assets/christmas.gif" />
-    <router-link class="top" to="all">
-      <el-button>Overview</el-button>
-    </router-link>
+    <div class="menu">
+      <router-link class="overview" to="all">
+        <el-button>Overview</el-button>
+      </router-link>
+      <router-link class="tree" to="tree">
+        <el-button>Tree</el-button>
+      </router-link>
+    </div>
     <router-view/>
   </div>
 </template>
 
 <script>
-export default {
-  name: "app"
-};
+  export default {
+    name: "app",
+    mounted() {
+      this.$store.dispatch('LOAD_QUESTIONS');
+    }
+  };
 </script>
 
 <style lang="scss">
@@ -25,7 +33,7 @@ body {
   width: 100%;
 }
 
-.top {
+.menu {
   position: absolute;
   left: 50px;
 }
