@@ -51,7 +51,16 @@ export default new Vuex.Store({
         text: ''
       }).then(function(response){
         commit('ADD_OPTION', {
-          id: response.data.id,
+          id: response.data.option.id,
+          question: data.id
+        });
+      });
+    },
+
+    DEL_OPTION: function({ commit }, data) {
+      axios.delete('api/v1/question/' + data.id + '/option/'  + data.option).then(function(response){
+        commit('DEL_OPTION', {
+          id: data.option,
           question: data.id
         });
       });
@@ -76,6 +85,13 @@ export default new Vuex.Store({
     ADD_QUESTION: (state, { question }) => {
       state.questions.push(question);
     },
+    DEL_OPTION: (state, { id, question }) => {
+      var index = state.questions.findIndex(item => item.id == question);
+      var question = state.questions[index];
+      var indexOption = question.options.findIndex(item => item.id == id);
+      question.options.splice(indexOption, 1);
+      Vue.set(state.questions, index, question);
+    },
     ADD_OPTION: (state, { id, question }) => {
       var index = state.questions.findIndex(item => item.id == question);
       var question = state.questions[index];
@@ -86,9 +102,6 @@ export default new Vuex.Store({
         text: '',
         to_question_id: null
       };
-      //if (!question.options ) {
-      //  question.options = [];
-      //}
       question.options.push(option);
       Vue.set(state.questions, index, question);
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="question">
+  <div class="question" v-if="question">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Story #{{ question.id }}</span>
@@ -50,6 +50,12 @@
           icon="el-icon-d-arrow-right"
           class="green-button"
         ></el-button>
+        <el-button
+          @click="del(option)"
+          type="primary"
+          icon="el-icon-delete"
+          class="red-button"
+        ></el-button>
       </div>
       <el-button type="primary" class="green-button" @click="addOption()">Add</el-button>
     </el-card>
@@ -84,6 +90,11 @@ export default {
     '$route' (to, from) {
       if (Number(from.params.question) !== Number(to.params.question)) {
         this.getQuestion()
+      }
+    },
+    questions() {
+      if (!this.question) {
+        this.getQuestion();
       }
     }
   },
@@ -136,6 +147,13 @@ export default {
       });
     },
 
+    del (option) {
+      this.$store.dispatch('DEL_OPTION', {
+        option: option.id,
+        id: this.question.id
+      });
+    },
+
     addOption (questionId) {
       this.$store.dispatch('ADD_OPTION', {
         id: this.question.id
@@ -158,6 +176,11 @@ export default {
   .green-button {
     background-color: #236b4b;
     border-color: #236b4b;
+  }
+
+  .red-button {
+    background-color: #FE0000;
+    border-color: #FE3300;
   }
 
   .clearfix:before,

@@ -81,6 +81,27 @@ class MessageController extends Controller
     ];
   }
 
+  public function deleteOptionQuestion(Request $request, $id = false, $option = false)
+  {
+    if (!$id) {
+      return response(['error' => 'No id given'], 400);
+    }
+    $question = Question::find($id);
+    if (!$question) {
+      return response(['error' => 'Question not found'], 400);
+    }
+
+    $option = Option::find($option);
+    if (!$option) {
+      return response(['error' => 'Option not found'], 400);
+    }
+
+    $option->delete();
+    return [
+      "status" => "oke"
+    ];
+  }
+
   public function storeOptionQuestion(Request $request, $id = false, $option = false)
   {
     if (!$id) {

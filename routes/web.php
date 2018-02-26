@@ -21,6 +21,7 @@ Route::get('/webhook', 'BotController@check');
 Route::post('api/v1/question','MessageController@storeQuestion');
 Route::post('api/v1/question/{id}','MessageController@storeQuestion');
 Route::post('api/v1/question/{id}/option','MessageController@storeOptionQuestion');
+Route::delete('api/v1/question/{id}/option/{option}','MessageController@deleteOptionQuestion');
 Route::post('api/v1/question/{id}/option/{option}','MessageController@storeOptionQuestion');
 
 Route::get('api/v1/questions','MessageController@all');
